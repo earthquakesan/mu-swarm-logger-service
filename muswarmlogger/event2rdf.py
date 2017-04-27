@@ -8,8 +8,8 @@ DOCKEVENT = Namespace('http://ontology.aksw.org/dockevent/')
 DOCKEVENT_TYPES = Namespace('http://ontology.aksw.org/dockevent/types/')
 DOCKEVENT_ACTIONS = Namespace('http://ontology.aksw.org/dockevent/actions/')
 DOCKEVENT_ACTORS = Namespace('http://ontology.aksw.org/dockevent/actors/')
-DOCKCONTAINER = Namespace('http://ontology.aksw.org/dockevent/containers/')
-DOCKCONTAINER_NETWORK = Namespace('http://ontology.aksw.org/dockevent/networks/')
+DOCKEVENT_CONTAINERS = Namespace('http://ontology.aksw.org/dockevent/containers/')
+DOCKEVENT_NETWORKS = Namespace('http://ontology.aksw.org/dockevent/networks/')
 
 class Event2RDF(object):
     def __init__(self):
@@ -24,6 +24,8 @@ class Event2RDF(object):
         store.bind("dockevent_types", DOCKEVENT_TYPES)
         store.bind("dockevent_action", DOCKEVENT_ACTIONS)
         store.bind("dockevent_actors", DOCKEVENT_ACTORS)
+        store.bind("dockevent_containers", DOCKEVENT_CONTAINERS)
+        store.bind("dockevent_networks", DOCKEVENT_NETWORKS)
         return store
 
     def add_event_to_graph(self, event, container=None):
@@ -42,7 +44,6 @@ class Event2RDF(object):
         event_node.add(DOCKEVENT.time, Literal(_time))
         event_node.add(DOCKEVENT.timeNano, Literal(_timeNano))
         event_node.add(DOCKEVENT.dateTime, Literal(_datetime.isoformat()))
-
 
         event_type = event.get("Type", "")
         if event_type == "container":
@@ -85,21 +86,21 @@ class Event2RDF(object):
 
         if container is not None:
             container_id = "%s_%s" % (container["Id"], _timeNano)
-            container_node = self.store.resource("dockcontainer:%s" % container_id)
-            container_node.add(DOCKCONTAINER.id, Literal(container["Id"]))
-            container_node.add(DOCKCONTAINER.name, Literal(container["Name"]))
+            container_node = self.store.resource("dockevent_containers:%s" % container_id)
+            container_node.add(DOCKEVENT.networkId, Literal(container["Id"]))
+            container_node.add(DOCKEVENT.networkName, Literal(container["Name"]))
             for label, value in container["Config"]["Labels"].items():
-                container_node.add(DOCKCONTAINER.label, Literal("%s=%s" % (label, value)))
+                container_node.add(DOCKEVENT.networkLabel, Literal("%s=%s" % (label, value)))
             for env_with_value in container["Config"]["Env"]:
-                container_node.add(DOCKCONTAINER.env, Literal(env_with_value))
-            event_node.add(DOCKEVENT.container, container_node)
+                container_node.add(DOCKEVENT.containerEnvVar, Literal(env_with_value))
             for name, network in container["NetworkSettings"]["Networks"].items():
                 network_id = "%s_%s" % (network["NetworkID"], _timeNano)
-                network_node = self.store.resource("dockcontainer_network:%s" % network_id)
-                network_node.add(DOCKCONTAINER_NETWORK.name, Literal(name))
-                network_node.add(DOCKCONTAINER_NETWORK.id, Literal(network["NetworkID"]))
-                network_node.add(DOCKCONTAINER_NETWORK.ipAddress, Literal(network["IPAddress"]))
-                container_node.add(DOCKCONTAINER.network, network_node)
+                network_node = self.store.resource("dockevent_networks:%s" % network_id)
+                network_node.add(DOCKEVENT.networkName, Literal(name))
+                network_node.add(DOCKEVENT.networkId, Literal(network["NetworkID"]))
+                network_node.add(DOCKEVENT.networkIp, Literal(network["IPAddress"]))
+                container_node.add(DOCKEVENT.network, network_node)
+            event_node.add(DOCKEVENT.container, container_node)
 
         actor = event.get("Actor", "")
         if actor != "":

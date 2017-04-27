@@ -4,8 +4,8 @@
 @prefix dockevent: <http://ontology.aksw.org/dockevent/> .
 @prefix dockevent_types: <http://ontology.aksw.org/dockevent/types/> .
 @prefix dockevent_actions: <http://ontology.aksw.org/dockevent/actions/> .
-@prefix dockcontainer: <http://ontology.aksw.org/dockevent/containers/> .
-@prefix dockcontainer_network: <http://ontology.aksw.org/dockevent/networks/> .
+@prefix dockevent_containers: <http://ontology.aksw.org/dockevent/containers/> .
+@prefix dockevent_networks: <http://ontology.aksw.org/dockevent/networks/> .
 
 
 dockevent:Event a owl:Class ;
@@ -166,6 +166,13 @@ dockevent:containerEnvVar a owl:DatatypeProperty ;
         rdfs:range        xsd:string ;
         rdfs:isDefinedBy  dockevent: ;
         rdfs:label        "event container env var"@en .
+
+dockevent:container a owl:ObjectProperty ;
+        rdfs:comment      "Defines container of an event."@en ;
+        rdfs:domain       dockevent:Event ;
+        rdfs:range        dockevent:Container ;
+        rdfs:isDefinedBy  dockevent: ;
+        rdfs:label        "container"@en .
 
 
 dockevent:Network a owl:Class ;
