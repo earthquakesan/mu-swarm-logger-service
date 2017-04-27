@@ -8,8 +8,8 @@ DOCKEVENT = Namespace('http://ontology.aksw.org/dockevent/')
 DOCKEVENT_TYPES = Namespace('http://ontology.aksw.org/dockevent/types/')
 DOCKEVENT_ACTIONS = Namespace('http://ontology.aksw.org/dockevent/actions/')
 DOCKEVENT_ACTORS = Namespace('http://ontology.aksw.org/dockevent/actors/')
-DOCKCONTAINER = Namespace('http://ontology.aksw.org/dockcontainer/')
-DOCKCONTAINER_NETWORK = Namespace('http://ontology.aksw.org/dockcontainer/network/')
+DOCKCONTAINER = Namespace('http://ontology.aksw.org/dockevent/containers/')
+DOCKCONTAINER_NETWORK = Namespace('http://ontology.aksw.org/dockevent/networks/')
 
 class Event2RDF(object):
     def __init__(self):

@@ -4,8 +4,8 @@
 @prefix dockevent: <http://ontology.aksw.org/dockevent/> .
 @prefix dockevent_types: <http://ontology.aksw.org/dockevent/types/> .
 @prefix dockevent_actions: <http://ontology.aksw.org/dockevent/actions/> .
-@prefix dockcontainer: <http://ontology.aksw.org/dockcontainer/> .
-@prefix dockcontainer_network: <http://ontology.aksw.org/dockcontainer/network/> .
+@prefix dockcontainer: <http://ontology.aksw.org/dockevent/containers/> .
+@prefix dockcontainer_network: <http://ontology.aksw.org/dockevent/networks/> .
 
 
 dockevent:Event a owl:Class ;
