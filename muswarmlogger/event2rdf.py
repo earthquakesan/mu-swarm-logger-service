@@ -39,7 +39,7 @@ class Event2RDF(object):
 
         event_id = "%s_%s" % (event_id, _timeNano)
         event_node = self.store.resource("dockevent:%s" % event_id)
-        event_node.add(RDF.type, DOCKEVENT_TYPES.event)
+        event_node.add(RDF.type, DOCKEVENT.Event)
         event_node.add(DOCKEVENT.eventId, Literal(event_id))
         event_node.add(DOCKEVENT.time, Literal(_time))
         event_node.add(DOCKEVENT.timeNano, Literal(_timeNano))
@@ -87,6 +87,7 @@ class Event2RDF(object):
         if container is not None:
             container_id = "%s_%s" % (container["Id"], _timeNano)
             container_node = self.store.resource("dockevent_containers:%s" % container_id)
+            container_node.add(RDF.type, DOCKEVENT.Container)
             container_node.add(DOCKEVENT.networkId, Literal(container["Id"]))
             container_node.add(DOCKEVENT.networkName, Literal(container["Name"]))
             for label, value in container["Config"]["Labels"].items():
@@ -96,6 +97,7 @@ class Event2RDF(object):
             for name, network in container["NetworkSettings"]["Networks"].items():
                 network_id = "%s_%s" % (network["NetworkID"], _timeNano)
                 network_node = self.store.resource("dockevent_networks:%s" % network_id)
+                network_node.add(RDF.type, DOCKEVENT.Network)
                 network_node.add(DOCKEVENT.networkName, Literal(name))
                 network_node.add(DOCKEVENT.networkId, Literal(network["NetworkID"]))
                 network_node.add(DOCKEVENT.networkIp, Literal(network["IPAddress"]))
@@ -107,6 +109,7 @@ class Event2RDF(object):
             actor_id = actor.get("ID", "")
             actor_id = "%s_%s" % (actor_id, _timeNano)
             actor_node = self.store.resource("dockevent_actors:%s" % actor_id)
+            actor_node.add(RDF.type, DOCKEVENT.Actor)
             actor_node.add(DOCKEVENT.actorId, Literal(actor_id, datatype=XSD.dateTime))
             actor_attributes = actor.get("Attributes", "")
             if actor_attributes != "":
